@@ -1,0 +1,61 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: laravel_app_biblioteca
+    volumes:
+      - ./backend:/var/www/html
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+    networks:
+      - biblioteca-network
+
+  webserver:
+    image: nginx:alpine
+    container_name: laravel_web_biblioteca
+    ports:
+      - "8080:80"
+    volumes:
+      - ./backend:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend
+    networks:
+      - biblioteca-network
+
+  db:
+    image: mysql:8.0
+    container_name: laravel_db_biblioteca
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: laravel
+    ports:
+      - "3307:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./_docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - biblioteca-network
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: vue_frontend_biblioteca
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    networks:
+      - biblioteca-network
+
+volumes:
+  dbdata:
+
+networks:
+  biblioteca-network:
+    driver: bridge
