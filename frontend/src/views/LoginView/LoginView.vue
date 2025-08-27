@@ -55,8 +55,16 @@
   </div>
 </template>
 
-<script>
-import { LoginViewScript }from './LoginView.js';
+<script setup>
+import { loginViewScript } from './LoginView.js'
+
+  const {
+    email,
+    password,
+    error,
+    loading,
+    handleLogin
+  } = loginViewScript()
 
 
 </script>
