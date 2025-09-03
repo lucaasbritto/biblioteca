@@ -24,6 +24,9 @@ Route::middleware('auth:api')->group(function () {
 
     Route::prefix('books')->group(function () {
         Route::get('/', [BookController::class, 'index']);
+        Route::post('/', [BookController::class, 'store']);
+        Route::put('/{id}', [BookController::class, 'update']);
+        Route::delete('/{id}', [BookController::class, 'destroy']);
     });
 
     Route::prefix('filters')->group(function () {

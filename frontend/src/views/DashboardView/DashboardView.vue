@@ -1,5 +1,8 @@
 <template>
   <div class="q-pa-md dashboard flex flex-center">
+    <div v-if="deleting" class="fullscreen-loading">
+      <q-spinner color="primary" size="50px" />
+    </div>
     <div class="full-width" style="max-width: 1200px">
       <q-card class="q-pa-md q-mb-md shadow-lg bg-grey-1">
         <div class="row q-col-gutter-md items-end">
@@ -8,7 +11,6 @@
               v-model="filters.titulo"
               label="Título"
               dense outlined rounded clearable
-              @update:model-value="applyFilter('titulo', filters.titulo)"
             >
               <template v-slot:prepend>
                 <q-icon name="search"/>
@@ -18,30 +20,20 @@
           <div class="col-md-4 col-12">
             <q-select
               v-model="filters.autor"
+              :options="filterStore.autores"
               label="Autor"
               dense outlined rounded clearable
               emit-value map-options
-              :options="filterStore.autores"
-              @update:model-value="applyFilter('autor', filters.autor)"
-            >
-              <template v-slot:prepend>
-                <q-icon name="person"/>
-              </template>
-            </q-select>
+            />
           </div>
           <div class="col-md-4 col-12">
             <q-select
               v-model="filters.assunto"
+              :options="filterStore.assuntos"
               label="Assunto"
               dense outlined rounded clearable
               emit-value map-options
-              :options="filterStore.assuntos"
-              @update:model-value="applyFilter('assunto', filters.assunto)"
-            >
-              <template v-slot:prepend>
-                <q-icon name="menu_book"/>
-              </template>
-            </q-select>
+            />
           </div>          
         </div>
       </q-card>
@@ -55,7 +47,7 @@
           rounded
           unelevated
           glossy
-          @click="criarLivro"
+          @click="abrirModalLivro"
         />
       </div>
 
@@ -64,13 +56,12 @@
           :rows="requestStore.requests"
           :columns="columns"
           row-key="Codl"
-          flat
-          dense
-          bordered
-          square
-          :rows-per-page-options="[5,10,15]"
-          row-hover
-          wrap-cells
+          flat dense bordered square row-hover wrap-cells
+          class="shadow-1 my-table"
+          :loading="requestStore.loading"
+          :rows-per-page="10"
+          :rows-per-page-options="[10, 20, 50, 100]"
+          style="color: #0083a0"
         >
           <template v-slot:body-cell-authors="props">
             <q-td :props="props">
@@ -104,7 +95,6 @@
 
           <template v-slot:body-cell-actions="props">
             <q-td :props="props" class="text-center">
-              <q-btn size="sm" dense color="green" icon="visibility" round flat @click="viewBook(props.row)" />
               <q-btn size="sm" dense color="blue" icon="edit" round flat @click="editBook(props.row)" />
               <q-btn size="sm" dense color="red" icon="delete" round flat @click="deleteBook(props.row)" />
             </q-td>
@@ -116,51 +106,38 @@
         </q-table>
       </q-card>
 
+      <LivroCreateModal
+        v-model="showModal"
+        :book="selectedBook"
+        :autor-options="filterStore.autores"
+        :assunto-options="filterStore.assuntos"
+        @save="handleSave"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { useDashboardScript } from './DashboardView.js'
-import './DashboardView.scss'
+import LivroCreateModal from '../../components/LivroCreateModal.vue'
+
+const selectedBook = ref({})
+const showModal = ref(false)
+const deleting = ref(false)
 
 const {
   requestStore,
-  filters,
-  pagination,
-  applyFilter,
-  criarLivro,
   filterStore,
-  columns
-} = useDashboardScript()
-
-
-
-function viewBook(book) {
-  console.log('Visualizar', book)
-}
-function editBook(book) {
-  console.log('Editar', book)
-}
-function deleteBook(book) {
-  console.log('Excluir', book)
-}
+  filters,
+  columns,
+  abrirModalLivro,
+  editBook,
+  deleteBook,
+  handleSave
+} = useDashboardScript({ selectedBook, showModal, deleting })
 </script>
 
-<style scoped>
-.dashboard {
-  max-width: 100%;
-}
-
-.q-table tr:hover {
-  background-color: #e0f7fa;
-}
-
-.q-table tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.q-btn {
-  margin: 0 2px;
-}
+<style lang="scss" >
+    @use './DashboardView.scss';  
 </style>

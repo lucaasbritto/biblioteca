@@ -3,13 +3,21 @@
 namespace App\Http\Controllers\Book;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\BookRequest;
 use App\Models\Book;
 use App\Models\Subject;
 use App\Models\Author;
+use App\Services\BookService;
+use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
+    protected $service;
+
+    public function __construct(BookService $service){
+        $this->service = $service;
+    }
+
     public function index(Request $request){
         $query = Book::with(['authors', 'subjects']);
 
@@ -18,36 +26,42 @@ class BookController extends Controller
         }
 
         if ($request->filled('autor')) {
-            $query->whereHas('authors', function ($q) use ($request) {
-                $q->where('Nome', 'like', "%{$request->autor}%");
-            });
+            $query->whereHas('authors', fn($q) => $q->where('CodAu', $request->autor));
         }
-        
+
         if ($request->filled('assunto')) {
-            $query->whereHas('subjects', function ($q) use ($request) {
-                $q->where('Descricao', $request->assunto);
-            });
+            $query->whereHas('subjects', fn($q) => $q->where('CodAs', $request->assunto));
         }
 
-        $books = $query->orderBy('Codl', 'asc')->paginate(10);
+        return response()->json($query->orderBy('Codl')->paginate(10));
+    }
 
-        return response()->json([
-            'data' => $books->items(),
-            'current_page' => $books->currentPage(),
-            'last_page' => $books->lastPage(),
-            'per_page' => $books->perPage(),
-            'total' => $books->total(),
-        ]);
+
+    public function store(BookRequest $request){
+        $book = $this->service->create($request->only(['Titulo','Editora','Edicao','AnoPublicacao','autor','assunto']));
+        return response()->json($book, 201);
+    }
+
+
+    public function update(BookRequest $request, $id){
+        $book = Book::findOrFail($id);
+        $book = $this->service->update($book, $request->only(['Titulo','Editora','Edicao','AnoPublicacao','autor','assunto']));
+        return response()->json($book, 200);
+    }
+
+    public function destroy($id){
+        $book = Book::findOrFail($id);
+        $this->service->delete($book);
+        return response()->json(['message' => 'Livro deletado com sucesso']);
     }
 
     public function getAssuntos()
     {
-        return Subject::select('Descricao as label', 'Descricao as value')->get();
+        return Subject::select('codAs as value', 'Descricao as label')->get();
     }
 
     public function getAutores()
     {
-        return Author::select('Nome as label', 'Nome as value')->get();
+        return Author::select('CodAu as value', 'Nome as label')->get();
     }
-    
 }
