@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Book\BookController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +18,17 @@ use App\Http\Controllers\Auth\AuthController;
 */
 
 Route::post('/login', [AuthController::class, 'login']);
-Route::middleware('auth:api')->get('/me', [AuthController::class, 'me']);
+
+Route::middleware('auth:api')->group(function () {
+    Route::get('/me', [AuthController::class, 'me']);
+
+    Route::prefix('books')->group(function () {
+        Route::get('/', [BookController::class, 'index']);
+    });
+
+    Route::prefix('filters')->group(function () {
+        Route::get('/assuntos', [BookController::class, 'getAssuntos']);
+        Route::get('/autores', [BookController::class, 'getAutores']);
+    });
+    
+});
