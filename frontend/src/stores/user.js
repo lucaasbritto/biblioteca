@@ -37,6 +37,8 @@ export const useUserStore = defineStore('user', {
       apiLogout()
       this.token = null
       this.user = null
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
     },
   },
 })
