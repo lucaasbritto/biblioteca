@@ -13,7 +13,7 @@ class Book extends Model
 
    protected $primaryKey = 'Codl';
     public $timestamps = false;
-    protected $fillable = ['Titulo', 'Editora', 'Edicao', 'AnoPublicacao'];
+    protected $fillable = ['Titulo', 'Editora', 'Edicao', 'AnoPublicacao','valor'];
 
     public function authors()
     {

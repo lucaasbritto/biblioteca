@@ -78,6 +78,12 @@
             </q-td>
           </template>
 
+          <template v-slot:body-cell-valor="props">
+            <q-td :props="props">
+              {{ new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(props.row.valor) }}
+            </q-td>
+          </template>
+
           <template v-slot:body-cell-subjects="props">
             <q-td :props="props">
               <q-chip

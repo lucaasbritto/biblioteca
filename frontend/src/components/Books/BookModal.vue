@@ -2,7 +2,7 @@
   <q-dialog v-model="dialogOpen" persistent>
     <q-card class="q-pa-md" style="min-width: 500px; max-width: 600px;">
       <q-card-section class="q-pt-none">
-        <div class="text-h6 q-mb-md">{{ modalTitle }} X</div>
+        <div class="text-h6 q-mb-md">{{ modalTitle }}</div>
 
         <BookForm
           v-model:book="localBook"

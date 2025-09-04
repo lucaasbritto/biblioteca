@@ -23,6 +23,7 @@ export function useDashboardScript({ selectedBook, showModal, deleting }) {
     { name: 'Editora', label: 'Editora', field: 'Editora', align: 'center', sortable: true },
     { name: 'Edicao', label: 'Edição', field: 'Edicao', align: 'center', sortable: true },
     { name: 'AnoPublicacao', label: 'Ano', field: 'AnoPublicacao', align: 'center', sortable: true },
+    { name: "valor", label: "Valor (R$)", field: "valor", align: "center", sortable: true },
     { name: 'authors', label: 'Autor', align: 'center', field: row => row.authors.map(a => a.Nome).join(', ') },
     { name: 'subjects', label: 'Assunto', align: 'center', field: row => row.subjects.map(s => s.Descricao).join(', ') },
     { name: 'actions', label: 'Ações', align: 'center', field: 'actions' }

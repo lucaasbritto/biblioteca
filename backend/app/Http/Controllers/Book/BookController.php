@@ -38,14 +38,14 @@ class BookController extends Controller
 
 
     public function store(BookRequest $request){
-        $book = $this->service->create($request->only(['Titulo','Editora','Edicao','AnoPublicacao','autor','assunto']));
+        $book = $this->service->create($request->only(['Titulo','Editora','Edicao','AnoPublicacao','valor','autor','assunto']));
         return response()->json($book, 201);
     }
 
 
     public function update(BookRequest $request, $id){
         $book = Book::findOrFail($id);
-        $book = $this->service->update($book, $request->only(['Titulo','Editora','Edicao','AnoPublicacao','autor','assunto']));
+        $book = $this->service->update($book, $request->only(['Titulo','Editora','Edicao','AnoPublicacao','valor','autor','assunto']));
         return response()->json($book, 200);
     }
 

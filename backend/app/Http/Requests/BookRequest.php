@@ -21,7 +21,8 @@ class BookRequest extends FormRequest
             'autor' => 'required|array|min:1',
             'autor.*' => 'exists:authors,CodAu',
             'assunto' => 'required|array|min:1',
-            'assunto.*' => 'exists:subjects,CodAs',
+            'assunto.*' => 'exists:subjects,codAs',
+            'valor' => 'required|numeric|min:0',
         ];
     }
 }
