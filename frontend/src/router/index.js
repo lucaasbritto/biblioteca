@@ -3,6 +3,8 @@ import LoginView from '../views/LoginView/LoginView.vue'
 import DashboardView from '../views/DashboardView/DashboardView.vue'
 import BookNewView from '../views/DashboardView/Books/BookNewView.vue'
 import { useUserStore } from '../stores/user'
+import AuthorNewView from '@/views/Author/AuthorNewView.vue'
+import AuthorsListView from '@/views/Author/AuthorsListView.vue'
 
 const routes = [
   {
@@ -20,7 +22,20 @@ const routes = [
     path: '/books/new',
     name: 'BookCreate',
     component: BookNewView,
-  }
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/authors",
+    name: "AuthorList",
+    component: AuthorsListView,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/authors/new',
+    name: 'AuthorCreate',
+    component: AuthorNewView,
+    meta: { requiresAuth: true }
+  },  
 ]
 
 const router = createRouter({

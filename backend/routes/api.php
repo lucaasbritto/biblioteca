@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Book\BookController;
+use App\Http\Controllers\Author\AuthorController;
 
 
 /*
@@ -27,6 +28,13 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/', [BookController::class, 'store']);
         Route::put('/{id}', [BookController::class, 'update']);
         Route::delete('/{id}', [BookController::class, 'destroy']);
+    });
+
+    Route::prefix('authors')->group(function () {
+        Route::get('/', [AuthorController::class, 'index']);
+        Route::post('/', [AuthorController::class, 'store']);
+        Route::put('/{id}', [AuthorController::class, 'update']);
+        Route::delete('/{id}', [AuthorController::class, 'destroy']);
     });
 
     Route::prefix('filters')->group(function () {
