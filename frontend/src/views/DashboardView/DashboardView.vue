@@ -106,7 +106,7 @@
         </q-table>
       </q-card>
 
-      <LivroCreateModal
+      <BookModal
         v-model="showModal"
         :book="selectedBook"
         :autor-options="filterStore.autores"
@@ -120,7 +120,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useDashboardScript } from './DashboardView.js'
-import LivroCreateModal from '../../components/LivroCreateModal.vue'
+import BookModal from '@/components/Books/BookModal.vue'
 
 const selectedBook = ref({})
 const showModal = ref(false)

@@ -10,7 +10,7 @@
         <q-icon name="menu_book" size="12px" class="section-icon" />
         Livros
       </div>
-      <q-item clickable v-ripple to="/books" exact active-class="menu-item-active" dense>
+      <q-item clickable v-ripple to="/" exact active-class="menu-item-active" dense>
         <q-item-section avatar>
           <q-icon name="library_books" size="14px" />
         </q-item-section>

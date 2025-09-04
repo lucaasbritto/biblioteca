@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView/LoginView.vue'
 import DashboardView from '../views/DashboardView/DashboardView.vue'
+import BookNewView from '../views/DashboardView/Books/BookNewView.vue'
 import { useUserStore } from '../stores/user'
 
 const routes = [
@@ -15,6 +16,11 @@ const routes = [
     component: DashboardView,
     meta: { requiresAuth: true },
   },
+  {
+    path: '/books/new',
+    name: 'BookCreate',
+    component: BookNewView,
+  }
 ]
 
 const router = createRouter({
