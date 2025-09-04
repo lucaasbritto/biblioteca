@@ -33,3 +33,20 @@ export async function updateAuthor(id, payload) {
 export async function deleteAuthor(id) {
   return await api.delete(`/authors/${id}`);
 }
+
+export async function getSubjects(filters = {}) {
+  const response = await api.get("/subjects", { params: filters });
+  return response.data;
+}
+
+export async function createSubject(payload) {
+  return await api.post("/subjects", payload);
+}
+
+export async function updateSubject(id, payload) {
+  return await api.put(`/subjects/${id}`, payload);
+}
+
+export async function deleteSubject(id) {
+  return await api.delete(`/subjects/${id}`);
+}

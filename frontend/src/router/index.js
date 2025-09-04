@@ -5,6 +5,8 @@ import BookNewView from '../views/DashboardView/Books/BookNewView.vue'
 import { useUserStore } from '../stores/user'
 import AuthorNewView from '@/views/Author/AuthorNewView.vue'
 import AuthorsListView from '@/views/Author/AuthorsListView.vue'
+import SubjectListView from '@/views/Subject/SubjectListView.vue'
+import SubjectNewView from '@/views/Subject/SubjectNewView.vue'
 
 const routes = [
   {
@@ -35,7 +37,19 @@ const routes = [
     name: 'AuthorCreate',
     component: AuthorNewView,
     meta: { requiresAuth: true }
-  },  
+  }, 
+  {
+    path: "/subjects",
+    name: "SubjectList",
+    component: SubjectListView,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/subjects/new',
+    name: 'SubjectCreate',
+    component: SubjectNewView,
+    meta: { requiresAuth: true }
+  },   
 ]
 
 const router = createRouter({

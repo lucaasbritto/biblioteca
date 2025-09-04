@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Book\BookController;
 use App\Http\Controllers\Author\AuthorController;
+use App\Http\Controllers\Subject\SubjectController;
 
 
 /*
@@ -35,6 +36,13 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/', [AuthorController::class, 'store']);
         Route::put('/{id}', [AuthorController::class, 'update']);
         Route::delete('/{id}', [AuthorController::class, 'destroy']);
+    });
+
+    Route::prefix('subjects')->group(function () {
+        Route::get('/', [SubjectController::class, 'index']);
+        Route::post('/', [SubjectController::class, 'store']);
+        Route::put('/{id}', [SubjectController::class, 'update']);
+        Route::delete('/{id}', [SubjectController::class, 'destroy']);
     });
 
     Route::prefix('filters')->group(function () {
