@@ -17,6 +17,10 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
+COPY ./backend /var/www/html
+
+RUN composer install --no-interaction --optimize-autoloader
+
 EXPOSE 9000
 
 CMD ["php-fpm"]
