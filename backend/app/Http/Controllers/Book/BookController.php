@@ -51,8 +51,8 @@ class BookController extends Controller
 
     public function destroy($id){
         $book = Book::findOrFail($id);
-        $this->service->delete($book);
-        return response()->json(['message' => 'Livro deletado com sucesso']);
+        $this->service->delete($book);        
+        return response()->noContent();
     }
 
     public function getAssuntos()
