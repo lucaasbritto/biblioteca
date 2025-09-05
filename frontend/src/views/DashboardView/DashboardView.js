@@ -1,6 +1,8 @@
-import { onMounted, reactive, watch } from 'vue'
+import { onMounted, reactive, watch, ref } from 'vue'
 import { useRequestStore } from '../../stores/requests'
 import { useFilterStore } from '../../stores/filters'
+import api from '@/api' 
+import { Notify } from 'quasar'
 
 export function useDashboardScript({ selectedBook, showModal, deleting }) {
   const requestStore = useRequestStore()
@@ -11,6 +13,8 @@ export function useDashboardScript({ selectedBook, showModal, deleting }) {
     autor: '',
     assunto: ''
   })
+
+  const downloading = ref(false)
 
   watch(filters, (newFilters) => {
     Object.keys(newFilters).forEach(key => requestStore.filters[key] = newFilters[key])
@@ -58,6 +62,52 @@ export function useDashboardScript({ selectedBook, showModal, deleting }) {
     }
   }
 
+  async function downloadReport() {
+    downloading.value = true
+
+    Notify.create({
+      message: 'Aguarde, gerando relatório...',
+      color: 'info',
+      icon: 'hourglass_top',
+      position: 'top-right',
+      timeout: 2000
+    })
+
+    try {
+      const response = await api.get("/report/books", {
+        responseType: "blob",
+      })
+
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const link = document.createElement("a")
+      link.href = url
+      link.setAttribute("download", "relatorio_livros.xlsx")
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+      
+      Notify.create({
+        message: 'Relatório pronto para download!',
+        color: 'positive',
+        icon: 'check',
+        position: 'top-right',
+        timeout: 3000
+      })
+
+    } catch (error) {
+      console.error("Erro ao baixar relatório:", error)
+      Notify.create({
+        message: 'Erro ao gerar o relatório.',
+        color: 'negative',
+        icon: 'error',
+        position: 'top-right',
+        timeout: 3000
+      })
+    } finally {
+      downloading.value = false
+    }
+  }
+
   onMounted(() => {
     filterStore.fetchFilters()
     requestStore.fetchRequests(1)
@@ -71,6 +121,8 @@ export function useDashboardScript({ selectedBook, showModal, deleting }) {
     abrirModalLivro,
     editBook,
     deleteBook,
-    handleSave
+    handleSave,
+    downloadReport,
+    downloading
   }
 }

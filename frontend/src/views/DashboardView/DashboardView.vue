@@ -49,6 +49,17 @@
           glossy
           @click="abrirModalLivro"
         />
+
+        <q-btn
+          label="Gerar relatório"
+          color="primary"
+          icon="download"
+          size="xs"
+          rounded unelevated glossy
+          :loading="downloading"
+          :disable="downloading"
+          @click="downloadReport"
+        />
       </div>
 
       <q-card flat bordered class="shadow-2">
@@ -140,7 +151,9 @@ const {
   abrirModalLivro,
   editBook,
   deleteBook,
-  handleSave
+  handleSave,
+  downloadReport,
+  downloading
 } = useDashboardScript({ selectedBook, showModal, deleting })
 </script>
 

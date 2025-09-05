@@ -6,7 +6,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Book\BookController;
 use App\Http\Controllers\Author\AuthorController;
 use App\Http\Controllers\Subject\SubjectController;
-
+use App\Http\Controllers\Exports\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +23,8 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
+    Route::get('/report/books', [ReportController::class, 'books']);
+
 
     Route::prefix('books')->group(function () {
         Route::get('/', [BookController::class, 'index']);
