@@ -6,6 +6,7 @@ services:
     container_name: laravel_app_biblioteca
     volumes:
       - ./backend:/var/www/html
+      - /var/www/html/vendor
     ports:
       - "9000:9000"
     depends_on:

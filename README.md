@@ -50,7 +50,7 @@ cd biblioteca
 
 2. **Copie o arquivo de ambiente para produção**
 ```bash
-  cp app/.env.example app/.env
+  cp backend/.env.example backend/.env
 ```
 
 3. **Configure o nome do banco em .env**
@@ -110,7 +110,7 @@ DB_DATABASE=laravel
 
 1. **Criando o .env.testing**
 ```bash
-cp app/.env.example app/.env.testing
+cp backend/.env.example backend/.env.testing
 ```
 
 2. **Configure o nome do banco em .env.testing**

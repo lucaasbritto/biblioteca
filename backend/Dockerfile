@@ -9,15 +9,17 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libonig-dev \
     libxml2-dev \
+    libzip-dev \
     zip \
+    zlib1g-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql mbstring exif pcntl bcmath
+    && docker-php-ext-install gd pdo pdo_mysql mbstring exif pcntl bcmath zip
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-COPY ./backend /var/www/html
+COPY . /var/www/html
 
 RUN composer install --no-interaction --optimize-autoloader
 
